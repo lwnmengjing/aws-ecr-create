@@ -1,18 +1,26 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import { CreateRepositoryCommand, ECRClient } from "@aws-sdk/client-ecr";
 
 async function run(): Promise<void> {
+  // try {
+  const region: string = core.getInput('aws-region')
+  core.debug(`AWS REGION ${region}`)
+
+  // a client can be shared by different commands.
+  const client = new ECRClient({ region });
+  const params = {
+    repositoryName: core.getInput('repository-name'),
+  };
+  const command = new CreateRepositoryCommand(params);
+
+  // async/await.
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
-
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
-
-    core.setOutput('time', new Date().toTimeString())
+    await client.send(command);
+    // process data.
   } catch (error) {
-    if (error instanceof Error) core.setFailed(error.message)
+    // error handling.
+  } finally {
+    // finally.
   }
 }
 

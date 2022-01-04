@@ -46,8 +46,9 @@ jobs:
         id: diff
 
       # If index.js was different than expected, upload the expected version as an artifact
-      - uses: actions/upload-artifact@v2
+      - name: Commit & Push changes
+        uses: actions-js/push@master
         if: ${{ failure() && steps.diff.conclusion == 'failure' }}
         with:
-          name: dist
-          path: dist/
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: 🚑 change dist
