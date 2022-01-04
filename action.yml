@@ -2,10 +2,14 @@ name: 'Your name here'
 description: 'Provide a description here'
 author: 'Your name or organization here'
 inputs:
-  milliseconds: # change this
+  aws-region: # change this
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'aws region'
+    default: ''
+  repository-name: # change this
+    required: true
+    description: 'aws ecr repository name'
+    default: ''
 runs:
   using: 'node12'
   main: 'dist/index.js'
